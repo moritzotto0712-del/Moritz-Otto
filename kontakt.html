@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt – LM Web Solution</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1B2D5B;
+    --navy-lt: #243568;
+    --blue:    #3B7BE8;
+    --white:   #ffffff;
+    --bg:      #f7f8fc;
+    --text:    #1B2D5B;
+    --muted:   #8892aa;
+    --border:  #d8dde8;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--white);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* ══ HEADER ══ */
+  header {
+    position: fixed;
+    top:0; left:0; right:0; z-index:200;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+  }
+
+  .logo { display:flex; align-items:center; gap:.55rem; text-decoration:none; }
+
+  .logo-mark {
+    width:34px; height:34px;
+    background: var(--navy);
+    border-radius: 7px;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .logo-mark svg { width:22px; height:22px; }
+
+  .logo-text { display:flex; flex-direction:column; line-height:1.15; }
+  .logo-text strong { font-size:.88rem; font-weight:800; color:var(--navy); letter-spacing:-.01em; }
+  .logo-text span   { font-size:.72rem; font-weight:400; color:var(--muted); }
+
+  nav { display:flex; align-items:center; gap:2rem; }
+  nav a { font-size:.82rem; font-weight:500; color:var(--muted); text-decoration:none; transition:color .15s; }
+  nav a:hover { color:var(--navy); }
+  .nav-cta { background:var(--navy); color:var(--white)!important; padding:.5rem 1.25rem; border-radius:8px; font-weight:600!important; }
+  .nav-cta:hover { background:var(--navy-lt)!important; }
+
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; border:1px solid var(--border); border-radius:8px; }
+  .hamburger span { width:20px; height:2px; background:var(--navy); border-radius:2px; display:block; }
+
+  /* ══ HERO ══ */
+  .hero { padding:7rem 2.5rem 2rem; max-width:1100px; margin:0 auto; }
+
+  .hero-eyebrow { font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); margin-bottom:1rem; }
+
+  .hero h1 { font-size:clamp(2rem,5vw,3.6rem); font-weight:800; color:var(--navy); line-height:1.08; letter-spacing:-.03em; margin-bottom:1.5rem; }
+  .hero h1 .dim { color:#b0bace; }
+
+  .trust-badge {
+    display:inline-flex; align-items:center; gap:.75rem;
+    background:var(--bg); border:1px solid var(--border);
+    border-radius:50px; padding:.55rem 1.2rem;
+    font-size:.82rem; color:var(--navy); font-weight:500; margin-bottom:2rem;
+  }
+
+  .trust-check { width:20px; height:20px; background:var(--blue); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:.65rem; flex-shrink:0; }
+  .trust-dot { width:4px; height:4px; background:var(--border); border-radius:50%; }
+
+  .stats-row { display:flex; gap:2.5rem; padding-bottom:2.5rem; border-bottom:1px solid var(--border); margin-bottom:0; }
+  .stat-val { font-size:2rem; font-weight:800; color:var(--navy); letter-spacing:-.04em; line-height:1; }
+  .stat-lbl { font-size:.75rem; color:var(--muted); margin-top:.25rem; }
+
+  /* ══ MODE TOGGLE ══ */
+  .mode-section { max-width:1100px; margin:0 auto; padding:2rem 2.5rem 2rem; }
+
+  .mode-toggle { display:inline-flex; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px; gap:3px; }
+
+  .mode-btn { padding:.6rem 1.5rem; border:none; border-radius:7px; font-family:'Inter',sans-serif; font-size:.82rem; font-weight:600; cursor:pointer; transition:all .2s; background:transparent; color:var(--muted); }
+  .mode-btn.active { background:var(--navy); color:white; box-shadow:0 2px 8px rgba(27,45,91,.2); }
+
+  .mode-desc { margin-top:.75rem; font-size:.8rem; color:var(--muted); }
+
+  /* ══ MAIN GRID ══ */
+  .main-grid { max-width:1100px; margin:0 auto; padding:0 2.5rem 5rem; display:grid; grid-template-columns:1fr 1.15fr; gap:1.5rem; align-items:start; }
+
+  /* ══ LEFT ══ */
+  .left-panel { background:var(--bg); border:1px solid var(--border); border-radius:16px; padding:2rem; }
+
+  .sec-lbl { font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; }
+
+  /* Packages */
+  .pkg-cards { display:flex; flex-direction:column; gap:.6rem; margin-bottom:2rem; }
+
+  .pkg-card { background:var(--white); border:1.5px solid var(--border); border-radius:12px; padding:1.1rem 1.25rem; cursor:pointer; transition:all .18s; position:relative; }
+  .pkg-card:hover { border-color:var(--blue); box-shadow:0 2px 12px rgba(59,123,232,.1); }
+  .pkg-card.sel { border-color:var(--navy); background:var(--navy); color:white; box-shadow:0 4px 20px rgba(27,45,91,.2); }
+  .pkg-card.sel .pkg-name, .pkg-card.sel .pkg-price { color:white; }
+  .pkg-card.sel .pkg-mo { color:rgba(255,255,255,.45); }
+  .pkg-card.sel .fi { color:rgba(255,255,255,.6); }
+  .pkg-card.sel .fc { color:#7fb8ff; }
+  .pkg-card.sel .pkg-badge { background:var(--blue); }
+
+  .pkg-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:.65rem; }
+  .pkg-name { font-size:.95rem; font-weight:700; color:var(--navy); }
+  .pkg-price { font-size:1.1rem; font-weight:800; color:var(--navy); letter-spacing:-.02em; }
+  .pkg-mo { font-size:.68rem; font-weight:400; color:var(--muted); }
+
+  .pkg-badge { position:absolute; top:-1px; right:1rem; background:var(--navy); color:white; font-size:.58rem; font-weight:700; padding:.18rem .55rem; border-radius:0 0 6px 6px; letter-spacing:.07em; text-transform:uppercase; }
+
+  .feat { display:flex; flex-direction:column; gap:.25rem; }
+  .fi { font-size:.75rem; color:var(--muted); display:flex; align-items:center; gap:.35rem; }
+  .fc { color:var(--blue); font-size:.7rem; }
+
+  /* Addons */
+  .addons { display:flex; flex-direction:column; }
+
+  .addon-row { display:flex; align-items:center; gap:.7rem; padding:.8rem 0; border-bottom:1px solid var(--border); cursor:pointer; transition:all .15s; }
+  .addon-row:last-child { border-bottom:none; }
+
+  .a-cb { width:18px; height:18px; border:1.5px solid var(--border); border-radius:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.65rem; color:transparent; background:white; transition:all .15s; }
+  .addon-row.chk .a-cb { background:var(--navy); border-color:var(--navy); color:white; }
+
+  .a-info { flex:1; }
+  .a-name { font-size:.82rem; font-weight:600; color:var(--navy); }
+  .a-sub  { font-size:.7rem; color:var(--muted); margin-top:.1rem; }
+  .a-price { font-size:.82rem; font-weight:700; color:var(--navy); white-space:nowrap; }
+
+  /* Summary */
+  .sum-box { margin-top:1.25rem; background:var(--navy); border-radius:12px; padding:1.25rem; display:none; }
+  .sum-lbl { font-size:.62rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.75rem; }
+  .sum-line { display:flex; justify-content:space-between; font-size:.8rem; color:rgba(255,255,255,.6); margin-bottom:.3rem; }
+  .sum-div { height:1px; background:rgba(255,255,255,.1); margin:.6rem 0; }
+  .sum-total { display:flex; justify-content:space-between; align-items:baseline; }
+  .sum-tl { font-size:.78rem; color:rgba(255,255,255,.45); }
+  .sum-ta { font-size:1.6rem; font-weight:800; color:white; letter-spacing:-.03em; }
+  .sum-ta small { font-size:.7rem; font-weight:400; color:rgba(255,255,255,.4); }
+
+  /* ══ RIGHT ══ */
+  .right-panel { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:2rem; }
+
+  .form-tabs { display:flex; background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:3px; gap:3px; margin-bottom:1.75rem; }
+  .tab-btn { flex:1; padding:.55rem 1rem; background:transparent; border:none; border-radius:6px; font-family:'Inter',sans-serif; font-size:.8rem; font-weight:600; color:var(--muted); cursor:pointer; transition:all .18s; }
+  .tab-btn.active { background:var(--navy); color:white; box-shadow:0 2px 6px rgba(27,45,91,.18); }
+
+  .form-sec { display:none; }
+  .form-sec.active { display:block; animation:fu .25s ease; }
+
+  @keyframes fu { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  /* Selected pill */
+  .sel-pill { display:none; align-items:center; justify-content:space-between; background:#eef4ff; border:1px solid #c5d9fb; border-radius:10px; padding:.85rem 1.1rem; margin-bottom:1.5rem; }
+  .sp-lbl { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); margin-bottom:.2rem; }
+  .sp-name { font-size:.9rem; font-weight:700; color:var(--navy); }
+  .sp-price { font-size:1.3rem; font-weight:800; color:var(--navy); letter-spacing:-.02em; }
+
+  /* Step bar */
+  .step-bar { display:flex; align-items:center; gap:.3rem; margin-bottom:1.75rem; }
+  .step-seg { height:3px; flex:1; background:var(--border); border-radius:3px; transition:background .3s; cursor:pointer; }
+  .step-seg.active { background:var(--navy); }
+  .step-seg.done   { background:var(--blue); }
+  .step-info { font-size:.72rem; color:var(--muted); font-weight:500; white-space:nowrap; margin-left:.5rem; }
+
+  .wiz-step { display:none; }
+  .wiz-step.active { display:block; animation:fu .25s ease; }
+
+  /* Fields */
+  .f2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+  .field { margin-bottom:1.25rem; }
+
+  label { display:block; font-size:.67rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--navy); margin-bottom:.5rem; }
+
+  input[type=text], input[type=email], input[type=tel], input[type=url], select {
+    width:100%; background:transparent; border:none; border-bottom:1.5px solid var(--border);
+    padding:.5rem 0; font-family:'Inter',sans-serif; font-size:.88rem; color:var(--navy);
+    outline:none; transition:border-color .2s; -webkit-appearance:none; border-radius:0;
+  }
+  input::placeholder { color:var(--muted); font-weight:300; }
+  input:focus, select:focus { border-bottom-color:var(--blue); }
+  select { cursor:pointer; }
+  select option { background:white; color:var(--navy); }
+
+  textarea { width:100%; background:transparent; border:1.5px solid var(--border); border-radius:8px; padding:.75rem; font-family:'Inter',sans-serif; font-size:.88rem; color:var(--navy); outline:none; resize:vertical; min-height:80px; transition:border-color .2s; }
+  textarea::placeholder { color:var(--muted); font-weight:300; }
+  textarea:focus { border-color:var(--blue); }
+
+  /* Pages grid */
+  .pg-grid { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-top:.5rem; }
+  .pg-item { display:flex; align-items:center; gap:.45rem; font-size:.8rem; font-weight:500; color:var(--navy); background:var(--bg); border:1.5px solid var(--border); border-radius:8px; padding:.55rem .75rem; cursor:pointer; transition:all .15s; }
+  .pg-item:hover { border-color:var(--blue); }
+  .pg-item.chk { border-color:var(--navy); background:#eef1f8; font-weight:600; }
+  .pg-cb { width:16px; height:16px; border:1.5px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.6rem; color:transparent; background:white; transition:all .15s; }
+  .pg-item.chk .pg-cb { background:var(--navy); border-color:var(--navy); color:white; }
+
+  /* Color chips */
+  .col-strip { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem; }
+  .col-chip { width:32px; height:32px; border-radius:7px; cursor:pointer; border:2px solid transparent; transition:all .15s; position:relative; }
+  .col-chip:hover { transform:scale(1.12); }
+  .col-chip.sel { border-color:var(--navy); transform:scale(1.12); }
+  .col-chip.sel::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:.6rem; color:white; font-weight:900; text-shadow:0 1px 3px rgba(0,0,0,.6); }
+
+  /* Upload */
+  .upload-zone { border:1.5px dashed var(--border); border-radius:10px; padding:1.5rem; text-align:center; cursor:pointer; transition:all .18s; position:relative; background:var(--bg); margin-top:.5rem; }
+  .upload-zone:hover { border-color:var(--blue); background:#eef4ff; }
+  .upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; border:none; background:none; padding:0; border-radius:0; }
+  .u-icon { font-size:1.6rem; margin-bottom:.4rem; }
+  .u-main { font-size:.82rem; font-weight:600; color:var(--navy); }
+  .u-main span { color:var(--blue); }
+  .u-hint { font-size:.7rem; color:var(--muted); margin-top:.2rem; }
+
+  /* Range */
+  .range-wrap { margin-top:.5rem; }
+  input[type=range] { width:100%; height:3px; -webkit-appearance:none; background:var(--border); border-radius:3px; outline:none; padding:0; border:none; border-bottom:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--navy); cursor:pointer; border:2px solid white; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+  .range-lbls { display:flex; justify-content:space-between; font-size:.7rem; color:var(--muted); margin-top:.5rem; }
+  .range-lbls .cur { color:var(--navy); font-weight:700; }
+
+  /* Buttons */
+  .btn-row { display:flex; gap:.75rem; margin-top:1.5rem; }
+  .btn-back { padding:.75rem 1.1rem; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; font-family:'Inter',sans-serif; font-size:.82rem; font-weight:600; color:var(--muted); cursor:pointer; transition:all .15s; white-space:nowrap; }
+  .btn-back:hover { color:var(--navy); border-color:var(--navy); }
+  .btn-next { flex:1; padding:.75rem 1.25rem; background:var(--navy); border:none; border-radius:9px; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:700; color:white; cursor:pointer; transition:all .18s; }
+  .btn-next:hover { background:var(--navy-lt); box-shadow:0 4px 14px rgba(27,45,91,.25); }
+  .btn-submit { width:100%; padding:.9rem; background:var(--navy); border:none; border-radius:9px; font-family:'Inter',sans-serif; font-size:.9rem; font-weight:700; color:white; cursor:pointer; transition:all .18s; margin-top:1.25rem; }
+  .btn-submit:hover { background:var(--navy-lt); box-shadow:0 4px 14px rgba(27,45,91,.25); }
+
+  .priv-note { font-size:.7rem; color:var(--muted); text-align:center; margin-top:.75rem; }
+  .priv-note a { color:var(--blue); text-decoration:none; }
+
+  /* Success */
+  .success { display:none; text-align:center; padding:2.5rem 1rem; animation:fu .4s ease; }
+  .success.vis { display:block; }
+  .suc-circle { width:64px; height:64px; background:var(--navy); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.25rem; font-size:1.6rem; color:white; }
+  .success h3 { font-size:1.35rem; font-weight:800; color:var(--navy); margin-bottom:.6rem; }
+  .success p { font-size:.85rem; color:var(--muted); line-height:1.65; }
+  .success p strong { color:var(--navy); }
+
+  /* ══ RESPONSIVE ══ */
+  @media(max-width:860px){
+    header { padding:0 1.25rem; }
+    nav { display:none; }
+    .hamburger { display:flex; }
+    .hero { padding:5.5rem 1.25rem 1.5rem; }
+    .mode-section { padding:1.5rem 1.25rem 1.5rem; }
+    .main-grid { grid-template-columns:1fr; padding:0 1.25rem 4rem; gap:1rem; }
+    .stats-row { gap:1.5rem; }
+    .f2 { grid-template-columns:1fr; }
+    .pg-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 18V4L8 14L11 8L14 14L20 4V18" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <strong>LM Web</strong>
+      <span>Solution</span>
+    </div>
+  </a>
+  <nav>
+    <a href="#">Start</a>
+    <a href="#">Portfolio</a>
+    <a href="#">Leistungen</a>
+    <a href="#">Preise</a>
+    <a href="#" class="nav-cta">Kontakt</a>
+  </nav>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Kontakt</div>
+  <h1>Lassen Sie uns<br><span class="dim">sprechen.</span></h1>
+
+  <div class="trust-badge">
+    <div class="trust-check">✓</div>
+    Kostenlose Erstberatung
+    <div class="trust-dot"></div>
+    Antwort innerhalb von 24 Stunden
+  </div>
+
+  <div class="stats-row">
+    <div><div class="stat-val">48h</div><div class="stat-lbl">Erste Vorschau</div></div>
+    <div><div class="stat-val">DSGVO</div><div class="stat-lbl">Konform</div></div>
+    <div><div class="stat-val">0€</div><div class="stat-lbl">Beratung</div></div>
+  </div>
+</section>
+
+<!-- MODE TOGGLE -->
+<div class="mode-section">
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="switchMode('simple')">💬 Kurze Frage</button>
+    <button class="mode-btn" onclick="switchMode('project')">🚀 Projekt anfragen</button>
+  </div>
+  <p class="mode-desc" id="mode-desc">Für allgemeine Fragen – wir antworten innerhalb von 24 Stunden.</p>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <p class="sec-lbl">Abo-Paket wählen</p>
+
+    <div class="pkg-cards">
+      <div class="pkg-card" id="pkg-starter" onclick="selPkg('starter',39)">
+        <div class="pkg-hd">
+          <div class="pkg-name">Starter</div>
+          <div style="text-align:right"><div class="pkg-price">39 €</div><div class="pkg-mo">/Monat</div></div>
+        </div>
+        <div class="feat">
+          <div class="fi"><span class="fc">✓</span> 1–2 Seiten · Template-Design</div>
+          <div class="fi"><span class="fc">✓</span> Hosting, Domain &amp; SSL</div>
+          <div class="fi"><span class="fc">✓</span> Impressum &amp; Datenschutz</div>
+          <div class="fi"><span class="fc">✓</span> Mobile Optimierung</div>
+          <div class="fi"><span class="fc">✓</span> 1× Änderung / Quartal · E-Mail Support</div>
+        </div>
+      </div>
+
+      <div class="pkg-card" id="pkg-basis" onclick="selPkg('basis',89)">
+        <div class="pkg-badge">Beliebt</div>
+        <div class="pkg-hd">
+          <div class="pkg-name">Basis</div>
+          <div style="text-align:right"><div class="pkg-price">89 €</div><div class="pkg-mo">/Monat</div></div>
+        </div>
+        <div class="feat">
+          <div class="fi"><span class="fc">✓</span> Bis 5 Seiten · Semi-Custom Design</div>
+          <div class="fi"><span class="fc">✓</span> Kontaktformular + Tel/E-Mail</div>
+          <div class="fi"><span class="fc">✓</span> Google Maps &amp; Bewertungen Widget</div>
+          <div class="fi"><span class="fc">✓</span> SEO Grundoptimierung</div>
+          <div class="fi"><span class="fc">✓</span> 1× Änderung / Monat · Jahres-Review</div>
+        </div>
+      </div>
+
+      <div class="pkg-card" id="pkg-pro" onclick="selPkg('pro',149)">
+        <div class="pkg-hd">
+          <div class="pkg-name">Pro</div>
+          <div style="text-align:right"><div class="pkg-price">149 €</div><div class="pkg-mo">/Monat</div></div>
+        </div>
+        <div class="feat">
+          <div class="fi"><span class="fc">✓</span> Bis 8 Seiten · vollständig Custom</div>
+          <div class="fi"><span class="fc">✓</span> Ladezeit-Opt. + Google Business Pflege</div>
+          <div class="fi"><span class="fc">✓</span> Monatliches SEO-Reporting</div>
+          <div class="fi"><span class="fc">✓</span> 4× Änderungen / Monat</div>
+          <div class="fi"><span class="fc">✓</span> E-Mail + Tel. Support (1 Tag Reaktionszeit)</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sec-lbl">Zusatzservices zubuchbar</p>
+    <div class="addons">
+      <div class="addon-row" onclick="togAddon(this,129)">
+        <div class="a-cb">✓</div>
+        <div class="a-info"><div class="a-name">📱 Social Media Management</div><div class="a-sub">8 Posts/Monat · Instagram + Google Business</div></div>
+        <div class="a-price">+129 €</div>
+      </div>
+      <div class="addon-row" onclick="togAddon(this,149)">
+        <div class="a-cb">✓</div>
+        <div class="a-info"><div class="a-name">📢 Google Ads Management</div><div class="a-sub">Setup, Optimierung &amp; monatl. Reporting</div></div>
+        <div class="a-price">+149 €</div>
+      </div>
+      <div class="addon-row" onclick="togAddon(this,79)">
+        <div class="a-cb">✓</div>
+        <div class="a-info"><div class="a-name">✍️ Blog &amp; Content</div><div class="a-sub">2 SEO-Artikel/Monat (~400 Wörter)</div></div>
+        <div class="a-price">+79 €</div>
+      </div>
+      <div class="addon-row" onclick="togAddon(this,89)">
+        <div class="a-cb">✓</div>
+        <div class="a-info"><div class="a-name">📧 E-Mail &amp; Newsletter</div><div class="a-sub">1 Newsletter/Monat · Listenpflege</div></div>
+        <div class="a-price">+89 €</div>
+      </div>
+    </div>
+
+    <div class="sum-box" id="sum-box">
+      <div class="sum-lbl">Ihre Auswahl</div>
+      <div id="sum-lines"></div>
+      <div class="sum-div"></div>
+      <div class="sum-total">
+        <span class="sum-tl">Gesamt / Monat</span>
+        <span class="sum-ta" id="sum-amt">0 € <small>/Mo.</small></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+    <div class="form-tabs">
+      <button class="tab-btn active" onclick="switchMode('simple')">💬 Kurze Frage</button>
+      <button class="tab-btn" onclick="switchMode('project')">🚀 Projekt anfragen</button>
+    </div>
+
+    <!-- SIMPLE -->
+    <div class="form-sec active" id="form-simple">
+      <div class="f2 field">
+        <div class="field"><label>Vorname</label><input type="text" placeholder="Max"></div>
+        <div class="field"><label>Nachname</label><input type="text" placeholder="Mustermann"></div>
+      </div>
+      <div class="field"><label>Ihr Betrieb</label><input type="text" placeholder="z.B. Bäckerei Müller"></div>
+      <div class="field"><label>Telefon</label><input type="tel" placeholder="+49 176 12345678"></div>
+      <div class="field"><label>E-Mail</label><input type="email" placeholder="max@beispiel.de"></div>
+      <div class="field"><label>Ihre Nachricht</label><textarea placeholder="Wie können wir Ihnen helfen? …"></textarea></div>
+      <button class="btn-submit" onclick="subSimple()">Nachricht senden →</button>
+      <p class="priv-note">Mit dem Absenden stimmen Sie unserer <a href="#">Datenschutzerklärung</a> zu.</p>
+    </div>
+
+    <!-- PROJECT -->
+    <div class="form-sec" id="form-project">
+      <div class="sel-pill" id="sel-pill">
+        <div><div class="sp-lbl">Gewähltes Paket</div><div class="sp-name" id="sp-name">–</div></div>
+        <div class="sp-price" id="sp-price">–</div>
+      </div>
+
+      <div id="wiz-wrap">
+        <div class="step-bar">
+          <div class="step-seg active" onclick="goStep(1)"></div>
+          <div class="step-seg" onclick="goStep(2)"></div>
+          <div class="step-seg" onclick="goStep(3)"></div>
+          <div class="step-seg" onclick="goStep(4)"></div>
+          <span class="step-info" id="step-info">Schritt 1 / 4</span>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="wiz-step active" id="step-1">
+          <div class="f2 field">
+            <div class="field"><label>Vorname *</label><input type="text" placeholder="Max"></div>
+            <div class="field"><label>Nachname *</label><input type="text" placeholder="Mustermann"></div>
+          </div>
+          <div class="field"><label>Ihr Betrieb</label><input type="text" placeholder="z.B. Bäckerei Müller"></div>
+          <div class="field"><label>Telefon</label><input type="tel" placeholder="+49 176 12345678"></div>
+          <div class="field"><label>E-Mail *</label><input type="email" placeholder="max@betrieb.de"></div>
+          <div class="btn-row"><button class="btn-next" onclick="goStep(2)">Weiter: Ihr Unternehmen →</button></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="wiz-step" id="step-2">
+          <div class="field">
+            <label>Branche</label>
+            <select><option value="">Bitte wählen …</option><option>Handwerk &amp; Bau</option><option>Gastronomie &amp; Hotel</option><option>Einzelhandel &amp; Shop</option><option>Dienstleistung &amp; Beratung</option><option>Gesundheit &amp; Wellness</option><option>Immobilien</option><option>Sonstiges</option></select>
+          </div>
+          <div class="field"><label>Zielgruppe</label><input type="text" placeholder="z.B. Familien in München, lokale KMU …"></div>
+          <div class="field">
+            <label>Gewünschte Seiten / Bereiche</label>
+            <div class="pg-grid">
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>🏠 Startseite</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>👥 Über uns</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>🛠 Leistungen</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>🖼 Portfolio</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>✍️ Blog</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>🛒 Online-Shop</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>⭐ Bewertungen</div>
+              <div class="pg-item" onclick="this.classList.toggle('chk')"><div class="pg-cb">✓</div>📞 Kontakt</div>
+            </div>
+          </div>
+          <div class="field"><label>Bestehende Website (falls vorhanden)</label><input type="url" placeholder="https://…"></div>
+          <div class="btn-row">
+            <button class="btn-back" onclick="goStep(1)">← Zurück</button>
+            <button class="btn-next" onclick="goStep(3)">Weiter: Design →</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="wiz-step" id="step-3">
+          <div class="field">
+            <label>Gewünschter Stil</label>
+            <select><option value="">Bitte wählen …</option><option>Modern &amp; Clean</option><option>Elegant &amp; Premium</option><option>Freundlich &amp; Warm</option><option>Professionell &amp; Seriös</option><option>Kreativ &amp; Dynamisch</option><option>Traditionell &amp; Vertrauenswürdig</option></select>
+          </div>
+          <div class="field">
+            <label>Farbpräferenz</label>
+            <div class="col-strip">
+              <div class="col-chip" style="background:#1B2D5B" onclick="this.classList.toggle('sel')" title="Navy"></div>
+              <div class="col-chip" style="background:#3B7BE8" onclick="this.classList.toggle('sel')" title="Blau"></div>
+              <div class="col-chip" style="background:#2d6a4f" onclick="this.classList.toggle('sel')" title="Grün"></div>
+              <div class="col-chip" style="background:#e63946" onclick="this.classList.toggle('sel')" title="Rot"></div>
+              <div class="col-chip" style="background:#ff9f1c" onclick="this.classList.toggle('sel')" title="Orange"></div>
+              <div class="col-chip" style="background:#9b5de5" onclick="this.classList.toggle('sel')" title="Lila"></div>
+              <div class="col-chip" style="background:#f0f0f0;border:1px solid #ccc" onclick="this.classList.toggle('sel')" title="Hell"></div>
+              <div class="col-chip" style="background:#1a1a1a" onclick="this.classList.toggle('sel')" title="Dunkel"></div>
+            </div>
+          </div>
+          <div class="field"><label>Referenz-Websites (URLs)</label><textarea placeholder="https://… &#10;https://…" style="min-height:60px"></textarea></div>
+          <div class="field"><label>Besondere Wünsche</label><textarea placeholder="Animationen, Schriften, Besonderes …" style="min-height:60px"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-back" onclick="goStep(2)">← Zurück</button>
+            <button class="btn-next" onclick="goStep(4)">Weiter: Materialien →</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="wiz-step" id="step-4">
+          <div class="field">
+            <label>Logo, Bilder &amp; Texte hochladen</label>
+            <div class="upload-zone">
+              <input type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt">
+              <div class="u-icon">📁</div>
+              <div class="u-main"><span>Dateien auswählen</span> oder hierher ziehen</div>
+              <div class="u-hint">PNG, JPG, PDF, DOCX – max. 20 MB pro Datei</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Budget / Monat (brutto)</label>
+            <div class="range-wrap">
+              <input type="range" min="39" max="600" step="10" value="89" oninput="updBudget(this)">
+              <div class="range-lbls"><span>39 €</span><span class="cur" id="budget-val">89 €/Mo.</span><span>600 €+</span></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Gewünschter Fertigstellungstermin</label>
+            <select><option>So schnell wie möglich (1–2 Wochen)</option><option>Innerhalb eines Monats</option><option>1–3 Monate</option><option>Noch offen</option></select>
+          </div>
+          <div class="field"><label>Texte / weitere Infos</label><textarea placeholder="Unternehmenstext, Slogan, Öffnungszeiten …"></textarea></div>
+          <div class="btn-row">
+            <button class="btn-back" onclick="goStep(3)">← Zurück</button>
+            <button class="btn-next" onclick="subProject()">🚀 Anfrage absenden</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="success" id="suc-project">
+        <div class="suc-circle">✓</div>
+        <h3>Anfrage erhalten!</h3>
+        <p>Wir haben alle Ihre Daten und starten sofort mit der Website-Vorschau.<br><br>Sie erhalten innerhalb von <strong>24–48 Stunden</strong> erste Entwürfe.</p>
+      </div>
+    </div>
+
+    <div class="success" id="suc-simple">
+      <div class="suc-circle">✓</div>
+      <h3>Nachricht gesendet!</h3>
+      <p>Danke für Ihre Anfrage.<br>Wir melden uns innerhalb von <strong>24 Stunden</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  let curMode='simple', curSelPkg=null, curPrice=0, addonSum=0;
+
+  function switchMode(m){
+    curMode=m;
+    document.querySelectorAll('.mode-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&m==='simple')||(i===1&&m==='project')));
+    document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&m==='simple')||(i===1&&m==='project')));
+    document.getElementById('mode-desc').textContent=m==='simple'?'Für allgemeine Fragen – wir antworten innerhalb von 24 Stunden.':'Laden Sie Ihre Materialien hoch und erhalten Sie eine Website-Vorschau.';
+    document.getElementById('form-simple').classList.toggle('active',m==='simple');
+    document.getElementById('form-project').classList.toggle('active',m==='project');
+    document.getElementById('suc-simple').classList.remove('vis');
+  }
+
+  function selPkg(name,price){
+    document.querySelectorAll('.pkg-card').forEach(c=>c.classList.remove('sel'));
+    document.getElementById('pkg-'+name).classList.add('sel');
+    curSelPkg=name; curPrice=price;
+    const lbl={starter:'Starter',basis:'Basis',pro:'Pro'}[name];
+    document.getElementById('sel-pill').style.display='flex';
+    document.getElementById('sp-name').textContent=lbl+' Paket';
+    document.getElementById('sp-price').textContent=price+' €/Mo.';
+    updSummary();
+    if(curMode==='simple') switchMode('project');
+  }
+
+  function togAddon(el,p){
+    el.classList.toggle('chk');
+    addonSum+=el.classList.contains('chk')?p:-p;
+    updSummary();
+  }
+
+  function updSummary(){
+    const box=document.getElementById('sum-box');
+    if(!curSelPkg){box.style.display='none';return;}
+    box.style.display='block';
+    const lbl={starter:'Starter',basis:'Basis',pro:'Pro'}[curSelPkg];
+    let h=`<div class="sum-line"><span>${lbl} Paket</span><span>${curPrice} €</span></div>`;
+    document.querySelectorAll('.addon-row.chk').forEach(a=>{
+      h+=`<div class="sum-line"><span>${a.querySelector('.a-name').textContent}</span><span>${a.querySelector('.a-price').textContent}</span></div>`;
+    });
+    document.getElementById('sum-lines').innerHTML=h;
+    document.getElementById('sum-amt').innerHTML=(curPrice+addonSum)+' € <small>/Mo.</small>';
+  }
+
+  function goStep(n){
+    if(n<1||n>4)return;
+    document.querySelectorAll('.wiz-step').forEach((s,i)=>s.classList.toggle('active',i+1===n));
+    document.querySelectorAll('.step-seg').forEach((s,i)=>{s.classList.toggle('active',i+1===n);s.classList.toggle('done',i+1<n);});
+    document.getElementById('step-info').textContent=`Schritt ${n} / 4`;
+  }
+
+  function updBudget(inp){
+    const v=parseInt(inp.value);
+    document.getElementById('budget-val').textContent=(v>=600?'600+':v)+' €/Mo.';
+  }
+
+  function subSimple(){
+    document.getElementById('form-simple').style.display='none';
+    document.getElementById('suc-simple').classList.add('vis');
+  }
+
+  function subProject(){
+    document.getElementById('wiz-wrap').style.display='none';
+    document.getElementById('sel-pill').style.display='none';
+    document.getElementById('suc-project').classList.add('vis');
+  }
+</script>
+</body>
+</html>
